@@ -1,0 +1,139 @@
+package ansi
+
+const (
+	Reset        string = "\033[39;49;0m"  // Reset foreground, background with no effects
+	DefaultText  string = "\033[39;49;22m" // Default text color and intensity
+	Default      string = "\033[39;49m"    // Default foreground and background color
+	ResetEffects string = "\033[0m"        // Turn off all effects
+)
+
+// premade ANSI basic 3 bit color codes
+//
+// Reference: https://en.wikipedia.org/wiki/ANSI_escape_code
+const (
+	BlackText          string = "\033[30m"
+	RedText            string = "\033[31m"
+	GreenText          string = "\033[32m"
+	YellowText         string = "\033[33m"
+	BlueText           string = "\033[34m"
+	PurpleText         string = "\033[35m"
+	CyanText           string = "\033[36m"
+	WhiteText          string = "\033[37m"
+	DefaultColorText   string = "\033[39m" // Normal foreground color
+	BgBlackText        string = "\033[40m"
+	BgRedText          string = "\033[41m"
+	BgGreenText        string = "\033[42m"
+	BgYellowText       string = "\033[43m"
+	BgBlueText         string = "\033[44m"
+	BgPurpleText       string = "\033[45m"
+	BgCyanText         string = "\033[46m"
+	BgWhiteText        string = "\033[47m"
+	BhDefaultColorText string = "\033[49m" // Normal background color
+)
+
+// premade bold and dim ANSI text colors
+const (
+	BoldText         string = "\033[1m"
+	BoldBlackText    string = "\033[1;30m"
+	BoldRedText      string = "\033[1;31m"
+	BoldGreenText    string = "\033[1;32m"
+	BoldYellowText   string = "\033[1;33m"
+	BoldBlueText     string = "\033[1;34m"
+	BoldMagentaText  string = "\033[1;35m"
+	BoldCyanText     string = "\033[1;36m"
+	BoldWhiteText    string = "\033[1;37m"
+	FaintText        string = "\033[2m"
+	FaintBlackText   string = "\033[2;30m"
+	FaintRedText     string = "\033[2;31m"
+	FaintGreenText   string = "\033[2;32m"
+	FaintYellowText  string = "\033[2;33m"
+	FaintBlueText    string = "\033[2;34m"
+	FaintMagentaText string = "\033[2;35m"
+	FaintCyanText    string = "\033[2;36m"
+	FaintWhiteText   string = "\033[2;37m"
+)
+
+// ANSI escape codes for text effects
+//
+// These are the most commonly used. ANSI codes above 9 are very
+// rare and many are not fully implemented.
+//  Normal      = 0
+//  Bold        = 1
+//  Faint       = 2
+//  Italics     = 3
+//  Underline   = 4
+//  Inverse     = 7
+//  Conceal     = 8
+//  Strikeout   = 9
+//
+const (
+	Normal byte = iota
+	Bold        // bold or increased intensity
+	Faint       // faint, decreased intensity or second color
+	Italics
+	Underline
+	Blink
+	FastBlink
+	Inverse
+	Conceal
+	Strikeout
+	// ANSI codes above 9 are very rare and many are not fully implemented.
+	PrimaryFont
+	AltFont1
+	AltFont2
+	AltFont3
+	AltFont4
+	AltFont5
+	AltFont6
+	AltFont7
+	AltFont8
+	AltFont9
+	Gothic // fraktur
+	DoubleUnderline
+	NormalColor // normal color or normal intensity (neither bold nor faint)
+	NotItalics  // not italicized, not fraktur
+	NotUnderlined
+	Steady     // not Blink or FastBlink
+	Reserved26 // reserved for proportional spacing as specified in CCITT Recommendation T.61
+	NotInverse // Positive
+	NotHidden  // Revealed
+	NotStrikeout
+	Black
+	Red
+	Green
+	Yellow
+	Blue
+	Magenta
+	Cyan
+	White
+	SetForeground     // Next arguments are 5;n or 2;r;g;b, see below
+	DefaultForeground // default display color (implementation-defined)
+	BlackBackground
+	RedBackground
+	GreenBackground
+	YellowBackground
+	BlueBackground
+	MagentaBackground
+	CyanBackground
+	WhiteBackground
+	SetBackground              // Next arguments are 5;n or 2;r;g;b, see below
+	DefaultBackground          // default background color (implementation-defined)
+	DisableProportionalSpacing // reserved for cancelling the effect of parameter value 26
+	Framed
+	Encircled
+	Overlined
+	NotFramed // NotEncircled
+	NotOverlined
+	Reserved56
+	Reserved57
+	SetUnderlineColor // Next arguments are 5;n or 2;r;g;b, see below
+	DefaultUnderlineColor
+	IdeogramUnderline       // ideogram underline or right side line
+	IdeogramDoubleUnderline // ideogram double underline or double line on the right side
+	IdeogramOverline        // ideogram overline or left side line
+	IdeogramDoubleOverline  // ideogram double overline or double line on the left side
+	IdeogramStress          // ideogram stress marking
+	IdeogramCancel          // reset the effects of all of 60–64
+	Superscript             = 73
+	Subscript               = 74
+)
