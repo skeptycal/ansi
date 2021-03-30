@@ -7,8 +7,6 @@ package ansi
 
 import (
 	"fmt"
-
-	"github.com/skeptycal/util/stringutils"
 )
 
 const (
@@ -17,13 +15,6 @@ const (
 	// Character used for HR function
 	HrChar string = "="
 )
-
-func ByteToNum(c byte) byte {
-	if stringutils.IsDigit(c) {
-		return c - 65
-	}
-	return '0'
-}
 
 // Print wraps args in an ANSI 8-bit color (256 color codes)
 func Print(i Ansi, args ...interface{}) {
