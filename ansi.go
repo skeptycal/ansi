@@ -7,14 +7,34 @@ package ansi
 
 import (
 	"fmt"
+	"strings"
 )
 
 const (
-	// Clear screen
-	ansiCLS = "\033[2J"
-	// Character used for HR function
-	HrChar string = "="
+	ansiCLS            string = "\033[2J" // ANSI escape code - clear screen
+	hrChar             string = "="
+	defaultScreenWidth int    = 80
 )
+
+func screenWidth() int {
+	// todo - add support for variable width
+	return defaultScreenWidth
+}
+
+func LineBreak(c string) {
+	if c == "" {
+		c = hrChar
+	}
+	fmt.Println(strings.Repeat(c, screenWidth()))
+}
+
+func Hr() {
+	LineBreak(hrChar)
+}
+
+func Br() {
+	fmt.Println("")
+}
 
 // Print wraps args in an ANSI 8-bit color (256 color codes)
 func Print(i Ansi, args ...interface{}) {
