@@ -16,6 +16,13 @@ const (
 	defaultScreenWidth int    = 80
 )
 
+var (
+	// Normal is the default color used when no other is specified
+	DefaultColor Ansi = NewColor(White, BlackBackground, Normal)
+	// Reversed is the default reverse color used when no other is specified
+	DefaultReversed Ansi = NewColor(Black, WhiteBackground, Inverse)
+)
+
 func screenWidth() int {
 	// todo - add support for variable width
 	return defaultScreenWidth
