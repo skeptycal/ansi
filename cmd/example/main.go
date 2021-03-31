@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/skeptycal/util/ansi"
+	"github.com/skeptycal/ansi"
 )
 
 func main() {
