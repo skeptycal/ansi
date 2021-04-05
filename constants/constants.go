@@ -1,11 +1,10 @@
-package ansi
+// Copyright (c) 2020 Michael Treanor
+// MIT License
 
-const (
-	Reset        string = "\033[39;49;0m"  // Reset foreground, background with no effects
-	DefaultText  string = "\033[39;49;22m" // Default text color and intensity
-	Default      string = "\033[39;49m"    // Default foreground and background color
-	ResetEffects string = "\033[0m"        // Turn off all effects
-)
+// Package ansiconstants provides an extensive set of ANSI escape codes
+// for use in command line interfaces (CLIs) using industry standard
+// well-documented terminal commands.
+package ansiconstants
 
 // premade ANSI basic 3 bit color codes
 //
