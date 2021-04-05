@@ -1,44 +1,26 @@
 package ansi
 
-// ANSI escape codes for CLI commands
+type CursorControls interface {
+	Up(n int)
+	Down(n int)
+	Left(n int)
+	Right(n int)
+	Show()
+	Hide()
+}
+
+// Format strings for ANSI escape codes for cursor control
 const (
-	ansiCLS        string = "\033[2J"  // ANSI escape code - clear screen
-	ansiClearLine  string = "\r\033[K" // Carriage return and clear line
+	fmtAnsiUp      string = "\x1b[%dA"
+	fmtAnsiDown    string = "\x1b[%dB"
+	fmtAnsiRight   string = "\x1b[%dC"
+	fmtAnsiLeft    string = "\x1b[%dD"
+	fmtAnsiNext    string = "\x1b[%dE"
+	fmtAnsiPrev    string = "\x1b[%dF"
+	fmtAnsiX       string = "\x1b[%dG"
 	ansiShowCursor string = "\x1b[?25h"
 	ansiHideCursor string = "\x1b[?25l"
 )
-
-// Format strings for ANSI escape codes for cursor movement
-const (
-	fmtAnsiUp    string = "\x1b[%dA"
-	fmtAnsiDown  string = "\x1b[%dB"
-	fmtAnsiRight string = "\x1b[%dC"
-	fmtAnsiLeft  string = "\x1b[%dD"
-	fmtAnsiNext  string = "\x1b[%dE"
-	fmtAnsiPrev  string = "\x1b[%dF"
-	fmtAnsiX     string = "\x1b[%dG"
-)
-
-// CLS clears the screen.
-func (t *Terminal) CLS() {
-	t.Print(ansiCLS)
-}
-
-// ClearLine clears moves the cursor to the start of the
-// the current line and clears the line.
-func (t *Terminal) ClearLine() {
-	t.Print(ansiClearLine)
-}
-
-// Show the cursor.
-func (t *Terminal) Show() {
-	t.Print(ansiShowCursor)
-}
-
-// Hide the cursor.
-func (t *Terminal) Hide() {
-	t.Print(ansiHideCursor)
-}
 
 // Up moves the cursor n cells to up.
 func (t *Terminal) Up(n int) {
@@ -73,4 +55,14 @@ func (t *Terminal) PreviousLine(n int) {
 // CursorX moves the cursor horizontally to x.
 func (t *Terminal) CursorX(x int) {
 	t.Printf(fmtAnsiX, x)
+}
+
+// Show the cursor.
+func (t *Terminal) Show() {
+	t.Print(ansiShowCursor)
+}
+
+// Hide the cursor.
+func (t *Terminal) Hide() {
+	t.Print(ansiHideCursor)
 }

@@ -18,21 +18,22 @@ import (
 )
 
 const (
-	ResetEffects string = "\033[39;49;0m"  // Reset foreground, background with no effects
-	DefaultText  string = "\033[39;49;22m" // Default text color and intensity
-	Default      string = "\033[39;49m"    // Default foreground and background color
-	Reset        string = "\033[0m"        // Turn off all effects
+	// ResetEffects string = "\033[39;49;0m"  // Reset foreground, background with no effects
+	// DefaultText  string = "\033[39;49;22m" // Default text color and intensity
+	Default string = "\033[39;49m" // Default foreground and background color
+	Reset   string = "\033[0m"     // Turn off all effects
+	fmtANSI string = "\033[%dm"
 )
 
-var Output = newAnsiStdout()
+// var Output = newAnsiStdout()
 
 func simpleEncode(b byte) string {
 	return fmt.Sprintf(fmtANSI, b)
+}
 
-}
-func encode(fg, bg, ef byte) string {
-	return fmt.Sprintf(ansiEncode, ef, fg, bg)
-}
+// func encode(fg, bg, ef byte) string {
+// 	return fmt.Sprintf(ansiEncode, ef, fg, bg)
+// }
 
 // ANSI escape codes for text effects
 //
@@ -98,7 +99,7 @@ const (
 
 var (
 	// Normal is the default color used when no other is specified
-	DefaultColor Ansi = NewColor(White, Black, Normal)
+	DefaultColor Ansi = NewColor(White, BlackBackground, Normal)
 	// Reversed is the default reverse color used when no other is specified
-	DefaultReversed Ansi = NewColor(Black, WhiteBackground, Inverse)
+	DefaultReversed Ansi = NewColor(White, BlackBackground, Inverse)
 )

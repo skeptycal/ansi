@@ -3,7 +3,9 @@ package ansi
 import "fmt"
 
 func (t *Terminal) on() {
-	fmt.Fprint(t.Writer, t.Color)
+	if t.useColor {
+		fmt.Fprint(t.Writer, t.Color)
+	}
 }
 
 // Print wraps args in ANSI 8-bit color codes (256 color codes)
