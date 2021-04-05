@@ -11,6 +11,8 @@ func main() {
 
 	var t = ansi.NewStdout(nil)
 
+	t.DevMode(true)
+
 	t.UseColor(false)
 
 	t.CLS()

@@ -199,6 +199,6 @@ func (t *Terminal) UseColor(b bool) {
 	t.useColor = b
 }
 
-func (t *Terminal) _DevMode(b bool) {
+func (t *Terminal) DevMode(b bool) {
 	t.devMode = b
 }
