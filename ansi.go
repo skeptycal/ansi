@@ -24,7 +24,7 @@ const (
 	Reset        string = "\033[0m"        // Turn off all effects
 )
 
-var Output = NewAnsiStdout()
+var Output = newAnsiStdout()
 
 func simpleEncode(b byte) string {
 	return fmt.Sprintf(fmtANSI, b)

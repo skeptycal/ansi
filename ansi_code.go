@@ -10,21 +10,6 @@ const (
 	ansiEncode = "\033[%d;38;5;%d;48;5;%dm"
 )
 
-// Format Strings 8 bit Ansi printf commands.
-//
-// ESC[⟨x⟩8:5:⟨n⟩m
-//
-// Select 8bit color
-//
-// n in [0..255]; 0-231 are colors; 232-255 are grayscale
-//
-// (x in [3, 4]); 3 = foreground; 4 = background
-const (
-	fmt8bit   string = "\033[%d8;5;%dm"
-	fmt8bitFG string = "\033[38;5;%dm"
-	fmt8bitBG string = "\033[48;5;%dm"
-)
-
 type Ansi interface {
 	String() string
 }

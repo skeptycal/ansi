@@ -9,7 +9,9 @@ import (
 func main() {
 	// main := ansi.NewColor(7, 32, 40)
 
-	var t = ansi.NewCLI(nil)
+	var t = ansi.NewStdout(nil)
+
+	t.UseColor(false)
 
 	t.CLS()
 	// t.Hr()

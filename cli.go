@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	defaultDevMode            = true
+	defaultDevMode            = false
 	defaultCLIforeground byte = 15
 	defaultCLIbackground byte = 0
 	defaultCLIeffect          = 0
@@ -18,13 +18,13 @@ const (
 )
 
 var (
-	defaultWriter      io.Writer = NewAnsiStdout()
+	defaultWriter      io.Writer = newAnsiStdout()
 	defaultErrorWriter io.Writer = NewAnsiStderr()
 )
 
-// NewAnsiStdout returns stdout which converts escape sequences to Windows
+// newAnsiStdout returns stdout which converts escape sequences to Windows
 // API calls on Windows environment.
-func NewAnsiStdout() io.Writer {
+func newAnsiStdout() io.Writer {
 	return os.Stdout
 }
 
@@ -47,7 +47,7 @@ type CLI interface {
 	Br()
 }
 
-func NewCLI(w io.Writer) CLI {
+func NewStdout(w io.Writer) CLI {
 	checkColor := true // todo bring this code over ...
 	devMode := defaultDevMode
 	if w == nil {
@@ -58,21 +58,32 @@ func NewCLI(w io.Writer) CLI {
 	}
 
 	return &Terminal{
-		Writer:            w,
-		UseColor:          checkColor,
-		devMode:           devMode,
-		DefaultForeground: defaultCLIforeground,
-		DefaultBackground: defaultCLIbackground,
-		DefaultEffect:     defaultCLIeffect,
-		fg:                defaultCLIforeground,
-		bg:                defaultCLIbackground,
-		ef:                defaultCLIeffect,
+		Writer:   w,
+		useColor: checkColor,
+		devMode:  devMode,
+	}
+}
+
+func NewStderr(w io.Writer) CLI {
+	checkColor := true // todo bring this code over ...
+	devMode := defaultDevMode
+	if w == nil {
+		w = defaultErrorWriter
+	}
+	if _, ok := w.(io.Writer); !ok {
+		w = defaultErrorWriter
+	}
+
+	return &Terminal{
+		Writer:   w,
+		useColor: checkColor,
+		devMode:  devMode,
 	}
 }
 
 type Terminal struct {
 	Writer                                   io.Writer `default:"defaultWriter"`
-	UseColor                                 bool      `default:"true"`
+	useColor                                 bool      `default:"true"`
 	devMode                                  bool
 	Color                                    string
 	DefaultForeground, fg                    byte `default:"15"`
@@ -81,7 +92,7 @@ type Terminal struct {
 
 // Inverse sets the inverse ANSI effect if the terminal supports it.
 func (t *Terminal) Inverse() {
-	if t.UseColor {
+	if t.useColor {
 		t.Print(simpleEncode(Inverse))
 	}
 }
@@ -111,27 +122,27 @@ func (t *Terminal) Br() {
 }
 
 func (t *Terminal) Reset() {
-	if t.UseColor {
+	if t.useColor {
 		fmt.Fprint(t.Writer, Reset)
 	}
 }
 
 func (t *Terminal) Fg(color byte) {
-	if t.UseColor {
+	if t.useColor {
 		t.fg = color
 		t.setColorString()
 	}
 }
 
 func (t *Terminal) Bg(color byte) {
-	if t.UseColor {
+	if t.useColor {
 		t.bg = color
 		t.setColorString()
 	}
 }
 
 func (t *Terminal) Ef(color byte) {
-	if t.UseColor {
+	if t.useColor {
 		t.ef = color
 		t.setColorString()
 	}
@@ -143,7 +154,7 @@ func (t *Terminal) screenWidth() int {
 }
 
 func (t *Terminal) setColorString() {
-	t.Color = encode(t.fg, t.bg, t.ef)
+	t.Color = t.encode()
 }
 
 func (t *Terminal) encode() string {
@@ -158,7 +169,7 @@ func (t *Terminal) String() string {
 	if t.devMode {
 		sb.WriteString(t.devinfo())
 	}
-	if !t.UseColor {
+	if !t.useColor {
 		sb.WriteString("ANSI terminal - no color output.")
 	} else {
 		fmt.Fprintf(sb, "%vANSI color output (fg = %v, bg = %v, ef = %v) %v\n", t.encode(), t.DefaultForeground, t.DefaultBackground, t.DefaultEffect, Reset)
@@ -177,9 +188,17 @@ func (t *Terminal) devinfo() string {
 		fmt.Fprintf(sb, "CLI variable (fg): %v\n", t.fg)
 		fmt.Fprintf(sb, "CLI variable (bg): %v\n", t.bg)
 		fmt.Fprintf(sb, "CLI variable (ef): %v\n", t.ef)
-		fmt.Fprintf(sb, "CLI variable (UseColor): %t\n", t.UseColor)
+		fmt.Fprintf(sb, "CLI variable (UseColor): %t\n", t.useColor)
 		fmt.Fprintf(sb, "CLI variable (devMode): %t\n", t.devMode)
 		fmt.Fprintf(sb, "CLI writer pointer: %v\n\n", &t.Writer)
 	}
 	return sb.String()
+}
+
+func (t *Terminal) UseColor(b bool) {
+	t.useColor = b
+}
+
+func (t *Terminal) _DevMode(b bool) {
+	t.devMode = b
 }
