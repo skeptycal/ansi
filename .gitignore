@@ -1,4 +1,8 @@
 
+
+ascii.html
+
+
 # Created by https://www.toptal.com/developers/gitignore/api/go,macos,windows,vscode,git,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=go,macos,windows,vscode,git,linux
 
@@ -60,7 +64,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -116,4 +121,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/go,macos,windows,vscode,git,linux
-
