@@ -2,11 +2,13 @@ package ansi
 
 import "fmt"
 
-func (t *Terminal) on() {
+func (t *Terminal) doCheckColor() {
 	if t.useColor {
-		fmt.Fprint(t.Writer, t.Color)
+		_, _ = t.Write(t.colorBytes)
 	}
 }
+
+func (t *Terminal) noOp() {}
 
 // Print wraps args in ANSI 8-bit color codes (256 color codes)
 func (t *Terminal) Print(args ...interface{}) {
@@ -16,9 +18,9 @@ func (t *Terminal) Print(args ...interface{}) {
 }
 
 // Printf wraps args in ANSI 8-bit color codes (256 color codes)
-func (t *Terminal) Printf(fmt string, args ...interface{}) {
+func (t *Terminal) Printf(s string, args ...interface{}) {
 	t.on()
-	// fmt.Fprintf(t.Writer, fmt, args...)
+	fmt.Fprintf(t.Writer, s, args...)
 	t.Reset()
 }
 

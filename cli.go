@@ -5,6 +5,8 @@ import (
 	"io"
 	"os"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -15,7 +17,7 @@ const (
 
 var (
 	defaultWriter      io.Writer = newAnsiStdout()
-	defaultErrorWriter io.Writer = NewAnsiStderr()
+	defaultErrorWriter io.Writer = newAnsiStderr()
 )
 
 // newAnsiStdout returns stdout which converts escape sequences
@@ -24,14 +26,16 @@ func newAnsiStdout() io.Writer {
 	return os.Stdout
 }
 
-// NewAnsiStderr returns stdout which converts escape sequences
+// newAnsiStderr returns stdout which converts escape sequences
 // to Windows API calls on Windows environment.
-func NewAnsiStderr() io.Writer {
+func newAnsiStderr() io.Writer {
 	return os.Stderr
 }
 
 // CLI implements an ANSI compatible terminal interface.
 type CLI interface {
+	io.Writer
+	io.StringWriter
 	String() string
 	Print(args ...interface{})
 	Printf(format string, args ...interface{})
@@ -42,7 +46,7 @@ type CLI interface {
 }
 
 func NewStdout(w io.Writer) CLI {
-	checkColor := true // todo bring this code over ...
+	checkColor := true // TODO check if color is supported - bring this code over ...
 	devMode := defaultDevMode
 	if w == nil {
 		w = defaultWriter
@@ -51,11 +55,19 @@ func NewStdout(w io.Writer) CLI {
 		w = defaultWriter
 	}
 
-	return &Terminal{
+	t := &Terminal{
 		Writer:   w,
 		useColor: checkColor,
 		devMode:  devMode,
 	}
+
+	if checkColor {
+		t.on = t.doCheckColor
+	} else {
+		t.on = t.noOp
+	}
+
+	return t
 }
 
 func NewStderr(w io.Writer) CLI {
@@ -78,10 +90,37 @@ func NewStderr(w io.Writer) CLI {
 type Terminal struct {
 	Writer                           io.Writer `default:"defaultWriter"`
 	useColor                         bool      `default:"true"`
+	on                               func()
 	devMode                          bool
-	Color                            string
-	DefaultForeground, fg            byte `default:"15"`
+	colorBytes                       []byte
+	useLog                           bool
+	log                              *log.Logger
+	DefaultForeground                byte `default:"15"`
 	DefaultBackground, DefaultEffect byte // default is Zero Value (0)
+}
+
+func (t *Terminal) Write(p []byte) (n int, err error) {
+	// TODO save current ansi colors
+
+	if t.useColor {
+		_, err = t.Write(t.colorBytes)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	n, err = t.Writer.Write(p)
+	if err != nil {
+		return n, err
+	}
+
+	// TODO instead of Reset(() - restore saved ansi colors
+	t.Reset()
+	return
+}
+
+func (t *Terminal) WriteString(s string) (n int, err error) {
+	return t.Write([]byte(s))
 }
 
 // Inverse sets the inverse ANSI effect if the terminal supports it.
@@ -98,11 +137,38 @@ func (t *Terminal) Reset() {
 	}
 }
 
+func (t *Terminal) Color() string {
+	return string(t.colorBytes)
+}
+
+func (t *Terminal) Info() {
+	if t.useLog {
+		t.log.Info()
+	}
+}
+
+// func (t *Terminal) SetLogging(b bool) {
+// 	t.useLog = b
+// 	if ok := xxx.(log.Logger); ok {
+
+// 	}
+// }
+
+// WriteString writes the contents of the string s to w, which accepts a slice of bytes.
+// If w implements StringWriter, its WriteString method is invoked directly.
+// Otherwise, w.Write is called exactly once.
+func WriteString(w io.Writer, s string) (n int, err error) {
+	if sw, ok := w.(io.StringWriter); ok {
+		return sw.WriteString(s)
+	}
+	return w.Write([]byte(s))
+}
+
 // SetColor sets the ANSI foreground, background, and effect codes
 // for upcoming output.
 func (t *Terminal) SetColor(color Ansi) {
 	if t.useColor {
-		t.Color = color.String()
+		t.colorBytes = []byte(color.String())
 	}
 }
 
@@ -117,7 +183,7 @@ func (t *Terminal) String() string {
 	if !t.useColor {
 		sb.WriteString("ANSI terminal - no color output.")
 	} else {
-		fmt.Fprintf(sb, "%vANSI color output (fg = %v, bg = %v, ef = %v) %v\n", t.Color, t.DefaultForeground, t.DefaultBackground, t.DefaultEffect, Reset)
+		fmt.Fprintf(sb, "%vANSI color output (fg = %v, bg = %v, ef = %v) %v\n", t.Color(), t.DefaultForeground, t.DefaultBackground, t.DefaultEffect, Reset)
 	}
 	return sb.String()
 }
@@ -130,7 +196,7 @@ func (t *Terminal) devinfo() string {
 		fmt.Fprintf(sb, "CLI variable (DefaultForeground): %v\n", t.DefaultForeground)
 		fmt.Fprintf(sb, "CLI variable (DefaultBackground): %v\n", t.DefaultBackground)
 		fmt.Fprintf(sb, "CLI variable (DefaultEffect): %v\n", t.DefaultEffect)
-		fmt.Fprintf(sb, "CLI variable (Color): %q\n", t.Color)
+		fmt.Fprintf(sb, "CLI variable (Color): %q\n", t.Color())
 		fmt.Fprintf(sb, "CLI variable (UseColor): %t\n", t.useColor)
 		fmt.Fprintf(sb, "CLI variable (devMode): %t\n", t.devMode)
 		fmt.Fprintf(sb, "CLI writer pointer: %v\n\n", &t.Writer)
