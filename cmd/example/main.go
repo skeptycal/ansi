@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 
-	"github.com/skeptycal/ansi"
+	"github.com/skeptycal/cli"
 )
 
 func main() {
 	// main := ansi.NewColor(7, 32, 40)
 
-	var t = ansi.NewStdout(nil)
+	var t = cli.NewStdout(nil)
 
 	fmt.Println(t)
 

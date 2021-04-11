@@ -22,13 +22,13 @@ const (
 	// DefaultText  string = "\033[39;49;22m" // Default text color and intensity
 	Default string = "\033[39;49m" // Default foreground and background color
 	Reset   string = "\033[0m"     // Turn off all effects
-	fmtANSI string = "\033[%dm"
+	FmtANSI string = "\033[%dm"
 )
 
 // var Output = newAnsiStdout()
 
 func simpleEncode(b byte) string {
-	return fmt.Sprintf(fmtANSI, b)
+	return fmt.Sprintf(FmtANSI, b)
 }
 
 // func encode(fg, bg, ef byte) string {

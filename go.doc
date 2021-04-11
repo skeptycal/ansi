@@ -16,20 +16,10 @@ const Default string = "\033[39;49m" ...
 const Normal byte = iota ...
 const Black byte = iota ...
 const BlackBackground byte = iota + 40 ...
-func WriteString(w io.Writer, s string) (n int, err error)
 func NewLogger() logger
 type Ansi interface{ ... }
     var DefaultColor Ansi = NewColor(White, BlackBackground, Normal) ...
     func NewColor(foregroundByte, backgroundByte, effectByte byte) Ansi
 type AnsiString interface{ ... }
     func NewAnsiString(color Ansi, s string) AnsiString
-type CLI interface{ ... }
-    func NewStderr(w io.Writer) CLI
-    func NewStdout(w io.Writer) CLI
-type CLIControls interface{ ... }
 type CursorControls interface{ ... }
-type LogFunction func() []interface{}
-type Logger struct{ ... }
-    func New() *Logger
-type MutexWrap struct{ ... }
-type Terminal struct{ ... }
