@@ -18,7 +18,7 @@ type CLIControls interface {
 const (
 	ansiCLS            string = "\033[2J"  // ANSI escape code - clear screen
 	ansiClearLine      string = "\r\033[K" // Carriage return and ANSI clear line code
-	hrChar             string = "="        // repeat character for Hr()
+	defaultHrChar      string = "="        // repeat character for Hr()
 	defaultScreenWidth int    = 80         // default screen width if not specified
 )
 
@@ -39,17 +39,19 @@ func (t *Terminal) ClearLine() {
 // This is useful in delimiting lines of text in terminal output.
 func (t *Terminal) LineBreak(c string) {
 	if c == "" {
-		c = hrChar
+		c = defaultHrChar
 	}
 	width := t.screenWidth()
 
-	s := strings.Repeat(c, width/len(c)+1)[:width]
+	repeatCount := width/len(c) + 1
+
+	s := strings.Repeat(c, repeatCount)[:width]
 	t.Println(s)
 }
 
 // Hr creates a hard return using the default character.
 func (t *Terminal) Hr() {
-	t.LineBreak(hrChar)
+	t.LineBreak(defaultHrChar)
 }
 
 // Br creates a line break.

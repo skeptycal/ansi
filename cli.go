@@ -37,9 +37,9 @@ type CLI interface {
 	io.Writer
 	io.StringWriter
 	String() string
-	Print(args ...interface{})
-	Printf(format string, args ...interface{})
-	Println(args ...interface{})
+	Print(args ...interface{}) (n int, err error)
+	Printf(format string, args ...interface{}) (n int, err error)
+	Println(args ...interface{}) (n int, err error)
 	SetColor(color Ansi)
 	Reset()
 	CLIControls
@@ -62,9 +62,9 @@ func NewStdout(w io.Writer) CLI {
 	}
 
 	if checkColor {
-		t.on = t.doCheckColor
+		t.on = doCheckColor
 	} else {
-		t.on = t.noOp
+		t.on = noOp
 	}
 
 	return t
@@ -90,37 +90,13 @@ func NewStderr(w io.Writer) CLI {
 type Terminal struct {
 	Writer                           io.Writer `default:"defaultWriter"`
 	useColor                         bool      `default:"true"`
-	on                               func()
+	on                               func(w io.Writer, p []byte) (n int, err error)
 	devMode                          bool
 	colorBytes                       []byte
 	useLog                           bool
 	log                              *log.Logger
 	DefaultForeground                byte `default:"15"`
 	DefaultBackground, DefaultEffect byte // default is Zero Value (0)
-}
-
-func (t *Terminal) Write(p []byte) (n int, err error) {
-	// TODO save current ansi colors
-
-	if t.useColor {
-		_, err = t.Write(t.colorBytes)
-		if err != nil {
-			return 0, err
-		}
-	}
-
-	n, err = t.Writer.Write(p)
-	if err != nil {
-		return n, err
-	}
-
-	// TODO instead of Reset(() - restore saved ansi colors
-	t.Reset()
-	return
-}
-
-func (t *Terminal) WriteString(s string) (n int, err error) {
-	return t.Write([]byte(s))
 }
 
 // Inverse sets the inverse ANSI effect if the terminal supports it.
@@ -137,8 +113,15 @@ func (t *Terminal) Reset() {
 	}
 }
 
+func (t *Terminal) SetDefault() {
+
+}
+
 func (t *Terminal) Color() string {
-	return string(t.colorBytes)
+	if t.useColor {
+		return string(t.colorBytes)
+	}
+	return ""
 }
 
 func (t *Terminal) Info() {

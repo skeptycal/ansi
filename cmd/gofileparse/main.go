@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -41,4 +42,6 @@ func main() {
 			extractedLines = append(extractedLines, line)
 		}
 	}
+
+	fmt.Println(extractedLines)
 }
