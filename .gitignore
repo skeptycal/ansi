@@ -1,6 +1,8 @@
 
 
 ascii.html
+bullets.html
+**/*.csv
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/go,macos,windows,vscode,git,linux
