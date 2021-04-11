@@ -13,23 +13,20 @@
 // Many of the ANSI cursor codes are from https://github.com/k0kubun/go-ansi
 package ansi
 
-import (
-	"fmt"
-)
-
 const (
 	// ResetEffects string = "\033[39;49;0m"  // Reset foreground, background with no effects
 	// DefaultText  string = "\033[39;49;22m" // Default text color and intensity
-	Default string = "\033[39;49m" // Default foreground and background color
-	Reset   string = "\033[0m"     // Turn off all effects
-	FmtANSI string = "\033[%dm"
+	Default    string = "\033[39;49m" // Default foreground and background color
+	Reset      string = "\033[0m"     // Turn off all effects
+	SetInverse string = "\x1b[7m"
+	FmtANSI    string = "\033[%dm"
 )
 
 // var Output = newAnsiStdout()
 
-func simpleEncode(b byte) string {
-	return fmt.Sprintf(FmtANSI, b)
-}
+// func simpleEncode(b byte) string {
+// 	return fmt.Sprintf(FmtANSI, b)
+// }
 
 // func encode(fg, bg, ef byte) string {
 // 	return fmt.Sprintf(ansiEncode, ef, fg, bg)
