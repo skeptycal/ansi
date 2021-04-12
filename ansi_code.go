@@ -7,7 +7,7 @@ import "fmt"
 
 const (
 	// set ANSI 8-bit (256 color) foreground and background color with leading effect
-	ansiEncode = "\033[%d;38;5;%d;48;5;%dm"
+	ansiEncode = "\033[%d;38;5;%d;48;5;%dm" // "\033[1;38;5;2;48;5;40m"
 )
 
 type Ansi interface {

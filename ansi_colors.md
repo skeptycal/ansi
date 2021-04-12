@@ -1,6 +1,9 @@
-# Regular Colors
+# Ansi Color Codes
+
+## Regular Colors
 
 `\e` is the escape `ESC` character in 'escape notation' commonly used in terminals. It can also be denoted with:
+
 - Control notation: `^[` (meaning `<ctrl> + <esc>`)
 - Hex: `\x1b` (python) `Ox1b` (C#, Go)
 - Octal: `\033` or `\o33`
@@ -8,7 +11,6 @@
 - Unicode: `U+001B`
 - html: `&#27;` (not displayed or renders as placeholder: &#27;)
 - sometimes a constant: `esc`
-
 
 | Value    | Color  |
 | -------- | ------ |
@@ -21,7 +23,7 @@
 | \e[0;36m | Cyan   |
 | \e[0;37m | White  |
 
-# Bold
+## Bold
 
 | Value    | Color  |
 | -------- | ------ |
@@ -34,7 +36,7 @@
 | \e[1;36m | Cyan   |
 | \e[1;37m | White  |
 
-# Underline
+## Underline
 
 | Value    | Color  |
 | -------- | ------ |
@@ -47,7 +49,7 @@
 | \e[4;36m | Cyan   |
 | \e[4;37m | White  |
 
-# Background
+## Background
 
 | Value  | Color  |
 | ------ | ------ |
@@ -60,7 +62,7 @@
 | \e[46m | Cyan   |
 | \e[47m | White  |
 
-# High Intensty
+## High Intensty
 
 | Value    | Color  |
 | -------- | ------ |
@@ -73,7 +75,7 @@
 | \e[0;96m | Cyan   |
 | \e[0;97m | White  |
 
-# Bold High Intensty
+## Bold High Intensty
 
 | Value    | Color  |
 | -------- | ------ |
@@ -86,7 +88,7 @@
 | \e[1;96m | Cyan   |
 | \e[1;97m | White  |
 
-# High Intensty backgrounds
+## High Intensty backgrounds
 
 | Value     | Color  |
 | --------- | ------ |
@@ -99,8 +101,8 @@
 | \e[0;106m | Cyan   |
 | \e[0;107m | White  |
 
-# Reset
+## Reset
 
-| Value | Color  |
-| ----- | ------ |
-| \e[0m | Reset  |
+| Value | Color |
+| ----- | ----- |
+| \e[0m | Reset |
