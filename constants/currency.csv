@@ -1,0 +1,70 @@
+Symbol	ALT Code	ALT X Code	Symbol Name	HTML Entity DEC	HTML Entity HEX	HTML Entity Named	Unicode Code Point
+$	ALT 36 or ALT 0036	0024 ALT X	Dollar sign, milréis, escudo	&#36;	&#x0024;	&dollar;	U+0024
+¢	ALT 155 or ALT 0162	00A2 ALT X	Cent sign	&#162;	&#x00A2;	&cent;	U+00A2
+£	ALT 156 or ALT 0163	00A3 ALT X	Pound sign, pound sterling, Irish punt	&#163;	&#x00A3;	&pound;	U+00A3
+¤	ALT 0164	00A4 ALT X	Currency sign	&#164;	&#x00A4;	&curren;	U+00A4
+¥	ALT 157 or ALT 0165	00A5 ALT X	Yen sign, yuan sign	&#165;	&#x00A5;	&yen;	U+00A5
+ƒ	ALT 402	0192 ALT X	Florin currency symbol (Netherlands), Latin small letter f with hook	&#402;	&#x0192;		U+0192
+֏	ALT 1423	058F ALT X	Armenian dram sign	&#1423;	&#x058F;		U+058F
+؋	ALT 1547	060B ALT X	Afghani sign	&#1547;	&#x060B;		U+060B
+߾	ALT 2046	07FE ALT X	Nko dorome sign	&#2046;	&#x12FE;		U+07FE
+߿	ALT 2047	07FF ALT X	Nko taman sign	&#2047;	&#x12FF;		U+07FF
+৲	ALT 2546	09F2 ALT X	Bengali rupee mark, taka	&#2546;	&#x09F2;		U+09F2
+৳	ALT 2547	09F3 ALT X	Bengali rupee sign, Bangladeshi taka	&#2547;	&#x09F3;		U+09F3
+৻	ALT 2555	09FB ALT X	Bengali ganda mark	&#2555;	&#x09FB;		U+09FB
+૱	ALT 2801	0AF1 ALT X	Gujarati rupee sign	&#2801;	&#x0AF1;		U+0AF1
+௹	ALT 3065	0BF9 ALT X	Tamil rupee sign, rupai	&#3065;	&#x0BF9;		U+0BF9
+฿	ALT 3647	0E3F ALT X	Thai currency symbol baht	&#3647;	&#x0E3F;		U+0E3F
+៛	ALT 6107	17DB ALT X	Khmer currency symbol riel	&#6107;	&#x17DB;		U+17DB
+₠	ALT 8352	20A0 ALT X	Euro-currency sign	&#8352;	&#x20A0;		U+20A0
+₡	ALT 8353	20A1 ALT X	Colon sign	&#8353;	&#x20A1;		U+20A1
+₢	ALT 8354	20A2 ALT X	Cruzeiro sign	&#8354;	&#x20A2;		U+20A2
+₣	ALT 8355	20A3 ALT X	French franc sign	&#8355;	&#x20A3;		U+20A3
+₤	ALT 8356	20A4 ALT X	Lira sign	&#8356;	&#x20A4;		U+20A4
+₥	ALT 8357	20A5 ALT X	Mill sign	&#8357;	&#x20A5;		U+20A5
+₦	ALT 8358	20A6 ALT X	Naira sign	&#8358;	&#x20A6;		U+20A6
+₧	ALT 158 or ALT 8359	20A7 ALT X	Peseta sign	&#8359;	&#x20A7;		U+20A7
+₨	ALT 8360	20A8 ALT X	Rupee sign	&#8360;	&#x20A8;		U+20A8
+₩	ALT 8361	20A9 ALT X	Won sign	&#8361;	&#x20A9;		U+20A9
+₪	ALT 8362	20AA ALT X	New sheqel sign	&#8362;	&#x20AA;		U+20AA
+₫	ALT 8363	20AB ALT X	Dong sign	&#8363;	&#x20AB;		U+20AB
+€	ALT 0128 or ALT 8364	20AC ALT X	Euro sign	&#8364;	&#x20AC;	&euro;	U+20AC
+₭	ALT 8365	20AD ALT X	Kip sign	&#8365;	&#x20AD;		U+20AD
+₮	ALT 8366	20AE ALT X	Tugrik sign	&#8366;	&#x20AE;		U+20AE
+₯	ALT 8367	20AF ALT X	Drachma sign	&#8367;	&#x20AF;		U+20AF
+₰	ALT 8368	20B0 ALT X	German penny sign	&#8368;	&#x20B0;		U+20B0
+₱	ALT 8369	20B1 ALT X	Peso sign, Filipino peso sign	&#8369;	&#x20B1;		U+20B1
+₲	ALT 8370	20B2 ALT X	Guarani sign	&#8370;	&#x20B2;		U+20B2
+₳	ALT 8371	20B3 ALT X	Austral sign	&#8371;	&#x20B3;		U+20B3
+₴	ALT 8372	20B4 ALT X	Hryvnia sign	&#8372;	&#x20B4;		U+20B4
+₵	ALT 8373	20B5 ALT X	Cedi sign	&#8373;	&#x20B5;		U+20B5
+₶	ALT 8374	20B6 ALT X	Livre tournois sign	&#8374;	&#x20B6;		U+20B6
+₷	ALT 8375	20B7 ALT X	Spesmilo sign	&#8375;	&#x20B7;		U+20B7
+₸	ALT 8376	20B8 ALT X	Tenge sign	&#8376;	&#x20B8;		U+20B8
+₹	ALT 8377	20B9 ALT X	Indian rupee sign	&#8377;	&#x20B9;		U+20B9
+₺	ALT 8378	20BA ALT X	Turkish lira sign	&#8378;	&#x20BA;		U+20BA
+₻	ALT 8379	20BB ALT X	Nordic mark sign	&#8379;	&#x20BB;		U+20BB
+₼	ALT 8380	20BC ALT X	Manat sign	&#8380;	&#x20BC;		U+20BC
+₽	ALT 8381	20BD ALT X	Ruble sign	&#8381;	&#x20BD;		U+20BD
+₾	ALT 8382	20BE ALT X	Lari sign	&#8382;	&#x20BE;		U+20BE
+₿	ALT 8383	20BF ALT X	Bitcoin sign	&#8383;	&#x20BF;		U+20BF
+ℳ	ALT 8499	2133 ALT X	German Mark currency symbol (pre-WWII), script capital M	&#8499;	&#x2133;		U+2133
+꠸	ALT 43064	A838 ALT X	North indic rupee mark	&#43064;	&#xA838;		U+A838
+﷼	ALT 65020	FDFC ALT X	Rial sign	&#65020;	&#xFDFC;		U+FDFC
+﹩	ALT 65129	FE69 ALT X	Small dollar sign	&#65129;	&#xFE69;		U+FE69
+＄	ALT 65284	FF04 ALT X	Fullwidth dollar sign	&#65284;	&#xFF04;		U+FF04
+￠	ALT 65504	FFE0 ALT X	Fullwidth cent sign	&#65504;	&#xFFE0;		U+FFE0
+￡	ALT 65505	FFE1 ALT X	Fullwidth pound sign	&#65505;	&#xFFE1;		U+FFE1
+￥	ALT 65509	FFE5 ALT X	Fullwidth yen sign	&#65509;	&#xFFE5;		U+FFE5
+￦	ALT 65510	FFE6 ALT X	Fullwidth won sign	&#65510;	&#xFFE6;		U+FFE6
+𞲰	ALT 126128	1ECB0 ALT X	Indic siyaq rupee mark	&#126128;	&#x1ECB0;		U+1ECB0
+💰	ALT 128176	1F4B0 ALT X	Money bag	&#128176;	&#x1F4B0;		U+1F4B0
+💱	ALT 128177	1F4B1 ALT X	Currency exchange	&#128177;	&#x1F4B1;		U+1F4B1
+💲	ALT 128178	1F4B2 ALT X	Heavy dollar sign	&#128178;	&#x1F4B2;		U+1F4B2
+💳	ALT 128179	1F4B3 ALT X	Credit card	&#128179;	&#x1F4B3;		U+1F4B3
+💴	ALT 128180	1F4B4 ALT X	Banknote with yen sign	&#128180;	&#x1F4B4;		U+1F4B4
+💵	ALT 128181	1F4B5 ALT X	Banknote with dollar sign	&#128181;	&#x1F4B5;		U+1F4B5
+💶	ALT 128182	1F4B6 ALT X	Banknote with euro sign	&#128182;	&#x1F4B6;		U+1F4B6
+💷	ALT 128183	1F4B7 ALT X	Banknote with pound sign	&#128183;	&#x1F4B7;		U+1F4B7
+💸	ALT 128184	1F4B8 ALT X	Money with wings	&#128184;	&#x1F4B8;		U+1F4B8
+💹	ALT 128185	1F4B9 ALT X	Chart with upwards trend and yen sign	&#128185;	&#x1F4B9;		U+1F4B9
