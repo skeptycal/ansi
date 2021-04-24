@@ -2,27 +2,28 @@ package ansi
 
 import "fmt"
 
-// NewAnsiString returns a new AnsiString that has
-// a Stringer interface that wraps it in an ansi color.
-func NewAnsiString(color Ansi, s string) AnsiString {
-	return &ansiString{color, s}
+// NewAnsiString returns a new AnsiString that wrapped
+// in an Ansi color.
+func NewAnsiString(color Ansi, str string) AnsiString {
+	return &ansiString{
+		s: fmt.Sprintf("%s%s%s", color, str, Reset),
+	}
 }
 
 // AnsiString implements a Stringer interface that wraps
 // a string in an ansi color format.
 //
-// The Stringer prefixes the string in an Ansi color code
-// set specified and the ansi Reset ansi code is place at
-// the end.
+// The Stringer wraps a string in Ansi color
+// It adds a prefix for the Ansi code set (fg,bg,effect)
+// and a suffix for the ANSI Reset code.
 type AnsiString interface {
 	String() string
 }
 
 type ansiString struct {
-	color Ansi
-	string
+	s string
 }
 
 func (s *ansiString) String() string {
-	return fmt.Sprintf("%s%s%s", s.color.String(), s.string, Reset)
+	return s.s
 }

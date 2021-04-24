@@ -14,7 +14,9 @@ func Test_ansiString_String(t *testing.T) {
 		bg    byte
 	}{
 		// TODO: Add test cases.
-		{"this string", "this string", 172, 0, 1},
+		{"172,0,1", "this string", 172, 0, 1},
+		{"255,0,2", "this string", 255, 0, 2},
+		{"2,4,7", "this string", 2, 4, 7},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
