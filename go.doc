@@ -1,9 +1,24 @@
 package ansi // import "github.com/skeptycal/ansi"
 
-Package ansi contains utilities for macOS.
+Package ansi provides fast ansi escape sequence processing based on
+strings.Builder. The standard is defined by the ECMA-48 standard "Control
+Functions for Coded Character Sets - Fifth Edition"
 
+The default zero values for Go variables are used whenever possible.
+Reference: https://golangbyexample.com/go-default-zero-value-all-types/
+
+ANSI escape codes for Command Line applications are well defined. Reference:
+https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+
+Many of the ANSI cursor codes are from https://github.com/k0kubun/go-ansi
+
+const Default string = "\033[39;49m" ...
+const Normal byte = iota ...
+const Black byte = iota ...
+var ResetBytes []byte = []byte(Reset)
 func Example()
 type Ansi interface{ ... }
+    var DefaultColor Ansi = NewColor(White, Black, Normal) ...
     func NewColor(foregroundByte, backgroundByte, effectByte byte) Ansi
 type AnsiString interface{ ... }
     func NewAnsiString(color Ansi, s string) AnsiString
