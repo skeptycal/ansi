@@ -1,5 +1,7 @@
 package main
 
+// ansistrings demo
+
 import (
 	"fmt"
 
