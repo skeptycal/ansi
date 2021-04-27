@@ -93,7 +93,6 @@ func BenchmarkAnsiBytes(b *testing.B) {
 	}{
 		{"bytes.Buffer 2+", ansiBytesBB2d},
 		{"bytes.Buffer 3+", ansiBytesBB3d},
-		{"Len1special", ansiOneAppend},
 
 		// {"strings.Builder 2+", ansiBytesSB2d},
 		// {"strings.Builder 3+", ansiBytesSB3d},
@@ -153,3 +152,33 @@ func TestNewColor(t *testing.T) {
 // 		})
 // 	}
 // }
+
+func Test_ansiCode_String(t *testing.T) {
+	type fields struct {
+		foreground byte
+		background byte
+		effect     byte
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+		// TODO: Add test cases.
+		{"green bold text", fields{2, 0, 1}, "\x1b[1;38;5;2;48;5;0m"},
+		{"black on red", fields{0, 1, 0}, "\x1b[0;38;5;0;48;5;1m"},
+		{"blue on red italic", fields{4, 1, 3}, "\x1b[3;38;5;4;48;5;1m"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &ansiCode{
+				foreground: tt.fields.foreground,
+				background: tt.fields.background,
+				effect:     tt.fields.effect,
+			}
+			if got := c.String(); got != tt.want {
+				t.Errorf("ansiCode.String() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
