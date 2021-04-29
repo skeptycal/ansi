@@ -5,180 +5,154 @@ package ansi
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 )
 
-// benchmark results
-/*
-/ Initial
-========================
-BenchmarkAnsiBytes/ansiBytes1-8         	15102102	        72.49 ns/op	       0 B/op	       0 allocs/op
-/// returning string([]bytes{})
-BenchmarkAnsiBytes/ansiBytes2-8         	 5918802	       214.0 ns/op	      88 B/op	       5 allocs/op
-
-/ Compare strings.Builder to bytes.Buffer
-BenchmarkAnsiBytes/default_2+(empty)-8         	25913701	        43.22 ns/op	      24 B/op	       1 allocs/op
-BenchmarkAnsiBytes/default_2+(empty)#01-8      	29575016	        40.39 ns/op	      16 B/op	       1 allocs/op
-
-/ length 1 and 3 are the most common cases by far ...
-BenchmarkAnsiBytes/default_2+(1_byte)-8        	17394726	        70.57 ns/op	      24 B/op	       1 allocs/op
-BenchmarkAnsiBytes/default_2+(1_byte)#01-8     	 9911772	       120.8 ns/op	      40 B/op	       3 allocs/op
-
-BenchmarkAnsiBytes/default_2+(2_bytes)-8       	12865417	        92.73 ns/op	      24 B/op	       1 allocs/op
-BenchmarkAnsiBytes/default_2+(2_bytes)#01-8    	 9142824	       133.5 ns/op	      40 B/op	       3 allocs/op
-
-BenchmarkAnsiBytes/default_2+(3_bytes)-8       	 6174462	       188.6 ns/op	      56 B/op	       3 allocs/op
-BenchmarkAnsiBytes/default_2+(3_bytes)#01-8    	 4515218	       265.3 ns/op	     104 B/op	       6 allocs/op
-
-BenchmarkAnsiBytes/default_2+(4_bytes)-8       	 4898269	       245.8 ns/op	      75 B/op	       3 allocs/op
-BenchmarkAnsiBytes/default_2+(4_bytes)#01-8    	 3839222	       312.8 ns/op	     128 B/op	       6 allocs/op
-
-BenchmarkAnsiBytes/default_2+(many_bytes)-8    	 1000000	      1071 ns/op	    1000 B/op	       3 allocs/op
-BenchmarkAnsiBytes/default_2+(many_bytes)#01-8 	 1011006	      1194 ns/op	    1240 B/op	       6 allocs/op
-
-/ added 0 len check (returns default with no allocation)
-	/ original (with buffer reset and case 0)
-	BenchmarkAnsiBytes/default_2+(empty)-8         			24936866	         44.27 ns/op	      24 B/op	       1 allocs/op
-	BenchmarkAnsiBytes/default_2+(empty)#01-8      			29483440	         41.17 ns/op	      16 B/op	       1 allocs/op
-	/ returning []byte constant
-	BenchmarkAnsiBytes/bytes.Buffer_2+(empty)-8         	244844850	         4.779 ns/op	       0 B/op	       0 allocs/op
-	BenchmarkAnsiBytes/bytes.Buffer_3+(empty)-8         	254841993	         4.651 ns/op	       0 B/op	       0 allocs/op
-	/ returning string constant
-	BenchmarkAnsiBytes/strings.Builder_2+(empty)-8         	249329725	         4.685 ns/op	       0 B/op	       0 allocs/op
-	BenchmarkAnsiBytes/strings.Builder_3+(empty)-8         	260941171	         4.570 ns/op	       0 B/op	       0 allocs/op
-
-/ length 1 and 3 are the most common cases by far ...
-/ since the trend is clear, isolate those cases for further testing
-BenchmarkAnsiBytes/default_2+(1_byte)-8        	16995898	        72.64 ns/op	      24 B/op	       1 allocs/op
-BenchmarkAnsiBytes/default_2+(1_byte)#01-8     	 9734612	       124.1 ns/op	      40 B/op	       3 allocs/op
-BenchmarkAnsiBytes/default_2+(3_bytes)-8       	 6276564	       189.2 ns/op	      56 B/op	       3 allocs/op
-BenchmarkAnsiBytes/default_2+(3_bytes)#01-8    	 4495221	       274.5 ns/op	     104 B/op	       6 allocs/op
-
-BenchmarkAnsiBytes/default_2+(empty)-8         	243858049	         4.647 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAnsiBytes/default_3+(empty)-8         	258202844	         4.665 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAnsiBytes/default_2+(1_byte)-8        	29871585	        37.07 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAnsiBytes/default_3+(1_byte)-8        	33776346	        36.73 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAnsiBytes/default_2+(3_bytes)-8       	 7239094	       164.0 ns/op	      32 B/op	       2 allocs/op
-BenchmarkAnsiBytes/default_3+(3_bytes)-8       	18027324	        67.50 ns/op	       0 B/op	       0 allocs/op
-
-BenchmarkAnsiBytes/default_2+(empty)-8         	142359066	         8.656 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAnsiBytes/default_3+(empty)-8         	129582454	         9.115 ns/op	       0 B/op	       0 allocs/op
-BenchmarkAnsiBytes/default_2+(1_byte)-8        	12934778	        86.40 ns/op	      24 B/op	       2 allocs/op
-BenchmarkAnsiBytes/default_3+(1_byte)-8        	13888183	        86.26 ns/op	      24 B/op	       2 allocs/op
-BenchmarkAnsiBytes/default_2+(3_bytes)-8       	 4988379	       236.6 ns/op	      88 B/op	       5 allocs/op
-BenchmarkAnsiBytes/default_3+(3_bytes)-8       	 8414373	       143.5 ns/op	      56 B/op	       3 allocs/op
-
-/ Compare default is length 2+ to 3+ (special algorithm for length 3)
-========================
-
-*/
-
-func BenchmarkAnsiBytes(b *testing.B) {
-	inputs := []struct {
-		name  string
-		input []byte
-	}{
-		{"empty", []byte{}},
-		{"1 byte", []byte{1}},
-		// {"2 bytes", []byte{1, 160}},
-		// {"3 bytes", []byte{1, 160, 196}},
-		// {"4 bytes", []byte{1, 3, 160, 196}},
-		// {"many bytes", []byte{1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196, 1, 3, 160, 196}},
-	}
-	benchmarks := []struct {
+type (
+	Any      = interface{}
+	any      = struct{}
+	testList struct {
 		name string
-		fn   func(b ...byte) []byte
-		// fn func(b ...byte) string
-	}{
-		{"bytes.Buffer 2+", ansiBytesBB2d},
-		{"bytes.Buffer 3+", ansiBytesBB3d},
-
-		// {"strings.Builder 2+", ansiBytesSB2d},
-		// {"strings.Builder 3+", ansiBytesSB3d},
+		args []Any
+		want Any
 	}
-	for _, in := range inputs {
-		for _, bb := range benchmarks {
-			name := fmt.Sprintf("%s(%s)", bb.name, in.name)
-			b.Run(name, func(b *testing.B) {
-				for i := 0; i < b.N; i++ {
-					bb.fn(in.input...)
+	funcList struct {
+		name string
+		fn   func() string
+	}
+)
+
+var (
+	testsNewAnsi = []struct {
+		name string
+		args []string
+		want string
+	}{
+		// {"no bytes(return default value)", []string{}, "\x1b[0;38;5;7;48;5;0m"},
+		// {"1 byte (Green)", []string{"2"}, "\x1b[38;5;2m"},
+		// {"2 bytes (fg/bg)", []string{"2", "4"}, "\x1b[38;5;2;48;5;4m"},
+		{"3 bytes (fg/bg/effect)", []string{"2", "0", "1"}, "\x1b[1;38;5;2;48;5;0m"},
+		// {">3 bytes (fg/bg + extra effects)", []string{"2", "4", "1", "3"}, "\x1b[1;3;38;5;2;48;5;4m"},
+		{"bold black on red", []string{"0", "1", "1"}, "\x1b[1;38;5;0;48;5;1m"},
+		{"italic blue on red", []string{"4", "1", "3"}, "\x1b[3;38;5;4;48;5;1m"},
+	}
+
+	funcsNewAnsi = []struct {
+		name string
+		fn   func(fg, bg, ef string) string
+	}{
+		// {"NewColor", NewColor}, // this is simply an export function for the most efficient algorithm
+		{"newColorConcat", newColorConcat},
+		{"newColorStringer", newColorStringer},
+		{"newColorSprintf", newColorSprintf},
+		{"newColorJoin", newColorJoin},
+		{"newColorSB", newColorSB},
+		{"newColorBB", newColorBB},
+	}
+)
+
+func Test_newColorString(t *testing.T) {
+	for _, tt := range testsNewAnsi {
+		for _, fn := range funcsNewAnsi {
+			name := fmt.Sprintf("%s(%s)", tt.name, fn.name)
+			t.Run(name, func(t *testing.T) {
+				if got := fn.fn(tt.args[0], tt.args[1], tt.args[2]); got != tt.want {
+					t.Errorf("newColorString() = %v, want %v", got, tt.want)
 				}
 			})
 		}
 	}
 }
 
-func TestNewColor(t *testing.T) {
-	type args struct {
-		foregroundByte byte
-		backgroundByte byte
-		effectByte     byte
-	}
-	tests := []struct {
-		name string
-		args args
-		want Ansi
-	}{
-		// TODO: Add test cases.
-		{"", args{2, 0, 1}, NewColor(2, 0, 1)},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewColor(tt.args.foregroundByte, tt.args.backgroundByte, tt.args.effectByte); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewColor() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+// this is a noop function
+// the three arguments are present to match the test function signature
+// pass the expected return value to 'foreground'
+// background and effect are ignored
+func newColorControl(foreground, background, effect string) string {
+	return foreground
 }
 
-// func Test_ansiBytes(t *testing.T) {
-// 	type args struct {
-// 		bytes []byte
-// 	}
-// 	tests := []struct {
-// 		name string
-// 		args args
-// 		want []byte
-// 	}{
-// 		// TODO: Add test cases.
-// 		{"nil", args{[]byte{}}, bReset},
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			if got := ansiBytes(tt.args.bytes...); !reflect.DeepEqual(got, tt.want) {
-// 				t.Errorf("ansiBytes() = %v, want %v", got, tt.want)
-// 			}
-// 		})
-// 	}
-// }
+func BenchmarkNewColor(b *testing.B) {
+	// initial results
+	/*
+		Conclusions:
+		* For small strings (the output values are on the order of 18 bytes long),
+		* Concat is faster than any other method, even with repetition and varied data
 
-func Test_ansiCode_String(t *testing.T) {
-	type fields struct {
-		foreground byte
-		background byte
-		effect     byte
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		want   string
+		Single test (testNewColor[0])
+
+		All Tests (looping through tests inside timed loop - all tests are within timed loop)
+
+		All Tests (looping through tests outside timed loop - only one test is in each time loop)
+
+
+		BenchmarkNewColor/NewColor(newColorControl)-8         	28835474	        40.19 ns/op	      16 B/op	       1 allocs/op
+		BenchmarkNewColor/NewColor(newColorControl)#01-8      	 9267547	       135.5 ns/op	      48 B/op	       3 allocs/op
+		BenchmarkNewColor/NewColor(newColorControl)#02-8      	10482974	       117.2 ns/op	      48 B/op	       3 allocs/op
+
+		BenchmarkNewColor/NewColor(newColorConcat)-8          	 9474012	       123.6 ns/op	      40 B/op	       2 allocs/op
+		BenchmarkNewColor/NewColor(newColorConcat)#01-8       	 3061848	       388.5 ns/op	     120 B/op	       6 allocs/op
+		BenchmarkNewColor/NewColor(newColorConcat)#02-8       	 3252994	       369.5 ns/op	     120 B/op	       6 allocs/op
+
+		BenchmarkNewColor/NewColor(newColorStringer)-8        	 3800276	       317.0 ns/op	      88 B/op	       5 allocs/op
+		BenchmarkNewColor/NewColor(newColorStringer)#01-8     	 1240056	       977.8 ns/op	     264 B/op	      15 allocs/op
+		BenchmarkNewColor/NewColor(newColorStringer)#02-8     	 1265025	       954.4 ns/op	     264 B/op	      15 allocs/op
+
+		BenchmarkNewColor/NewColor(newColorSprintf)-8         	 3862953	       321.5 ns/op	      88 B/op	       5 allocs/op
+		BenchmarkNewColor/NewColor(newColorSprintf)#01-8      	 1251404	      1001 ns/op	     264 B/op	      15 allocs/op
+		BenchmarkNewColor/NewColor(newColorSprintf)#02-8      	 1259708	       956.6 ns/op	     264 B/op	      15 allocs/op
+
+		BenchmarkNewColor/NewColor(newColorJoin)-8            	 5132965	       227.9 ns/op	      56 B/op	       5 allocs/op
+		BenchmarkNewColor/NewColor(newColorJoin)#01-8         	 1683765	       715.5 ns/op	     168 B/op	      15 allocs/op
+		BenchmarkNewColor/NewColor(newColorJoin)#02-8         	 1738910	       691.9 ns/op	     168 B/op	      15 allocs/op
+
+		BenchmarkNewColor/NewColor(newColorSB)-8              	 7133187	       166.8 ns/op	      72 B/op	       4 allocs/op
+		BenchmarkNewColor/NewColor(newColorSB)#01-8           	 2287580	       518.8 ns/op	     216 B/op	      12 allocs/op
+		BenchmarkNewColor/NewColor(newColorSB)#02-8           	 2370159	       510.8 ns/op	     216 B/op	      12 allocs/op
+
+		BenchmarkNewColor/NewColor(newColorBB)-8              	 6663630	       181.6 ns/op	     104 B/op	       3 allocs/op
+		BenchmarkNewColor/NewColor(newColorBB)#01-8           	 2151378	       557.7 ns/op	     312 B/op	       9 allocs/op
+		BenchmarkNewColor/NewColor(newColorBB)#02-8           	 2203754	       548.1 ns/op	     312 B/op	       9 allocs/op
+	*/
+	var result Any
+	var r Any
+	var bFuncTests = []struct {
+		name string
+		fn   func(fg, bg, ef string) string
 	}{
-		// TODO: Add test cases.
-		{"green bold text", fields{2, 0, 1}, "\x1b[1;38;5;2;48;5;0m"},
-		{"black on red", fields{0, 1, 0}, "\x1b[0;38;5;0;48;5;1m"},
-		{"blue on red italic", fields{4, 1, 3}, "\x1b[3;38;5;4;48;5;1m"},
+		{"newColorControl", newColorControl},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			c := &ansiCode{
-				foreground: tt.fields.foreground,
-				background: tt.fields.background,
-				effect:     tt.fields.effect,
+	bFuncTests = append(bFuncTests, funcsNewAnsi...)
+
+	for _, fn := range bFuncTests {
+		name := fmt.Sprintf("%s(%s)", "NewColor", fn.name)
+
+		// single test
+		b.Run(name, func(b *testing.B) {
+			bb := testsNewAnsi[0]
+			for i := 0; i < b.N; i++ {
+				r = fn.fn(bb.args[0], bb.args[1], bb.args[2])
 			}
-			if got := c.String(); got != tt.want {
-				t.Errorf("ansiCode.String() = %v, want %v", got, tt.want)
+		})
+
+		// with inner loop
+		b.Run(name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				for _, bb := range testsNewAnsi {
+					r = fn.fn(bb.args[0], bb.args[1], bb.args[2])
+				}
+			}
+		})
+
+		// with outer loop
+		b.Run(name, func(b *testing.B) {
+			for _, bb := range testsNewAnsi {
+				for i := 0; i < b.N; i++ {
+					r = fn.fn(bb.args[0], bb.args[1], bb.args[2])
+				}
 			}
 		})
 	}
+	result = r
+	_ = result
 }
