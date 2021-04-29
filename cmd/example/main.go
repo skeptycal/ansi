@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	c      = ansi.NewColor
+	c      = ansi.NewColor // alias for creating new colors
 	green  = c(ansi.Green, ansi.Black, ansi.Bold)
 	blue   = c(ansi.Blue, ansi.Black, ansi.Bold)
 	red    = c(ansi.Red, ansi.Black, ansi.Bold)

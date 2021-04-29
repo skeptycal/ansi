@@ -16,7 +16,7 @@ func main() {
 
 	color := ansi.NewColor(172, 0, 1)
 
-	a := ansi.NewAnsiString(color, s)
+	a := ansi.NewFromAnsi(color, s)
 
 	fmt.Println(a)
 }
