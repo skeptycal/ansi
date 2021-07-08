@@ -4,23 +4,70 @@
 package ansi
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
+	"io"
+	"net/http/httptest"
+	"os"
 	"testing"
 )
 
+var (
+	// defaultBenchmarkOutput is a buffered writer to os.Stderr
+	defaultBenchmarkOutput = bufio.NewWriter(os.Stderr)
+
+	// benchmarkBuffer implements io.Writer and is used to store output of
+	// benchmark until all steps have finished. This eliminates the processing
+	// or lag that may occur due to the writing of data. Upon successful
+	// benchmark completion, the buffer contents are sent to the output.
+	benchmarkBuffer = new(bytes.Buffer)
+
+	benchmarkResponse = httptest.NewRecorder()
+)
+
 type (
-	Any      = interface{}
-	any      = struct{}
+	Any = interface{}
+	any = struct{}
+
+	benchmarkDesc struct {
+		name   string
+		note   string
+		output io.Writer
+		tests  []benchmarkTest
+	}
+
+	benchmarkTest struct {
+		name string
+		list testList
+	}
+
 	testList struct {
 		name string
 		args []Any
 		want Any
 	}
+
 	funcList struct {
 		name string
 		fn   func() string
 	}
 )
+
+func writerCheck(w io.Writer) io.Writer {
+	if w == nil {
+		return defaultBenchmarkOutput
+	}
+	if w.(io.Writer); ok {
+
+	}
+}
+
+func RunBenchmark(b benchmarkDesc) {
+
+	w := writerCheck(b.output)
+
+}
 
 var (
 	testsNewAnsi = []struct {
