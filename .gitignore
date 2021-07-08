@@ -16,6 +16,7 @@
 ascii.html
 bullets.html
 **/*.csv
+old_ansi_code.go
 
 
 ### Security ###
