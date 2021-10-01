@@ -5,10 +5,13 @@
 package ansi
 
 import (
+	. "https://github.com/skeptycal/ansi/ansiconstants"
 	"bytes"
 	"fmt"
 	"strings"
 )
+
+type Any = interface{}
 
 const (
 	prefix  string = "\x1b["

@@ -46,7 +46,7 @@ func (f *logFile) Stat() (fi os.FileInfo, err error) {
 func (f *logFile) File() (ff *os.File, err error) {
 
 	if f.file == nil {
-		fi, err := f.Stat()
+		_, err := f.Stat()
 		if err != nil {
 			if os.IsNotExist(err) {
 				ff, err = os.OpenFile(
@@ -73,9 +73,13 @@ func (f *logFile) File() (ff *os.File, err error) {
 
 func (f *logFile) Writer() *bufio.Writer {
 	if f.file == nil {
-		f.file = bufio.NewWriter(f.File())
+		w, err := f.File()
+		if err != nil {
+			return nil
+		}
+		f.file = bufio.NewWriter(w)
 	}
-
+	return f.file
 }
 
 func NewLogFile(name string, append bool, maxlogsize int64) *logFile {

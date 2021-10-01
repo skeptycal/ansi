@@ -14,9 +14,8 @@ func main() {
 
 	fmt.Println(s)
 
-	color := ansi.NewColor("172", "0", "1")
+	a := ansi.NewColor("172", "0", "1")
 
-	a := ansi.NewFromAnsi(color, s)
-
-	fmt.Println(a)
+	fmt.Print(a)
+	fmt.Println(s)
 }

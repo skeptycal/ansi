@@ -4,12 +4,7 @@
 package ansi
 
 import (
-	"bufio"
-	"bytes"
 	"fmt"
-	"io"
-	"net/http/httptest"
-	"os"
 	"testing"
 )
 

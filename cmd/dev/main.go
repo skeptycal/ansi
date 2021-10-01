@@ -17,10 +17,10 @@ import (
 type Some struct{}
 
 var (
-	fg      byte = 17
-	bg      byte = 214
-	ef      byte = ansi.Italics
-	rainbow      = ansi.Rainbow
+	fg byte = 17
+	bg byte = 214
+	ef byte = 1
+	// rainbow      = ansi.Rainbow
 )
 
 func ExampleAnsi() error {
@@ -47,7 +47,7 @@ func ExampleAnsi() error {
 			tt.b,
 			got,
 			got,
-			ansi.Reset,
+			ansiconstants.Reset,
 			tt.want,
 			tt.want,
 			ansi.Reset,
