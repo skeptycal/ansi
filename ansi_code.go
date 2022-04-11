@@ -5,30 +5,34 @@
 package ansi
 
 import (
-	. "https://github.com/skeptycal/ansi/ansiconstants"
 	"bytes"
 	"fmt"
 	"strings"
+
+	_ "github.com/skeptycal/ansi/ansiconstants"
 )
 
 type Any = interface{}
 
 const (
-	prefix  string = "\x1b["
-	fg      string = "38;5;"
-	bg      string = "48;5;"
-	suffix  string = "m"
-	ansiSep string = ";"
+	ansiEncodeBasicFMT string = "\x1b[%v;%v;%vm"
+	prefix             string = "\x1b["
+	fg                 string = "38;5;"
+	bg                 string = "48;5;"
+	suffix             string = "m"
+	ansiSep            string = ";"
+
+	fg2 = ansiSep + fg
+	bg2 = ansiSep + bg
 )
 
 var (
-	defaultAnsiCode = newColorStruct("2", "0", "1")
-	current         = newColorStruct(
-		defaultAnsiCode.foreground,
-		defaultAnsiCode.background,
-		defaultAnsiCode.effect,
-	)
+	defaultAnsiCode = NewColor("2", "0", "1")
 )
+
+func ansiEncodeBasic(fg, bg, ef string) string {
+	return fmt.Sprintf(ansiEncodeBasicFMT, fg, bg, ef)
+}
 
 func NewColor(foreground, background, effect string) string {
 	return newColorConcat(foreground, background, effect)
@@ -38,11 +42,6 @@ func newColorConcat(foreground, background, effect string) string {
 	//     "\x1b[        %d      ;	  38;5;       %d      ;       48;5;     %d         m"
 	return prefix + effect + ansiSep + fg + foreground + ansiSep + bg + background + suffix
 }
-
-const (
-	fg2 = ansiSep + fg
-	bg2 = ansiSep + bg
-)
 
 func newColorConcat2(foreground, background, effect string) string {
 	//     "\x1b[     %d    ;38;5;     %d      ;48;5;     %d         m"
@@ -123,11 +122,6 @@ func newColorJoin(foreground, background, effect string) string {
 	)
 }
 
-func newColorStringer(foreground, background, effect string) string {
-	a := &ansi{foreground, background, effect}
-	return a.String()
-}
-
 func newColorSprintf(foreground, background, effect string) string {
-	return fmt.Sprintf(ansiEncode, effect, foreground, background)
+	return fmt.Sprintf(ansiEncodeBasicFMT, effect, foreground, background)
 }

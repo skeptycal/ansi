@@ -1,0 +1,6 @@
+package ansi // import "github.com/skeptycal/ansi"
+
+func Example()
+func NewColor(foreground, background, effect string) string
+func NewColorMake(foreground, background, effect string) string
+type Any = interface{}

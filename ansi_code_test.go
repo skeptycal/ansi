@@ -29,7 +29,6 @@ var (
 	}{
 		// {"NewColor", NewColor}, // this is simply an export function for the most efficient algorithm
 		{"newColorConcat", newColorConcat},
-		{"newColorStringer", newColorStringer},
 		{"newColorSprintf", newColorSprintf},
 		{"newColorJoin", newColorJoin},
 		{"newColorSB", newColorSB},
