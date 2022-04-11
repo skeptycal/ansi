@@ -1,4 +1,4 @@
-package ansiconstants
+package ansi
 
 const (
 	SymCommand            string = `⌘`

@@ -1,10 +1,10 @@
 // Copyright (c) 2020 Michael Treanor
 // MIT License
 
-// Package ansiconstants provides an extensive set of ANSI escape codes
+// Package ansi provides an extensive set of ANSI escape codes
 // for use in command line interfaces (CLIs) using industry standard
 // well-documented terminal commands.
-package ansiconstants
+package ansi
 
 // Format Strings 8 bit Ansi printf commands.
 //

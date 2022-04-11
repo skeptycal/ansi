@@ -8,8 +8,6 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
-
-	_ "github.com/skeptycal/ansi/ansiconstants"
 )
 
 type Any = interface{}
